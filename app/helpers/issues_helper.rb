@@ -89,6 +89,16 @@ module IssuesHelper
                                        'id', 'title', object.milestone_id)
   end
 
+  def review_box_class(item)
+    if item.downvotes > 0
+      'ci-failed'
+    elsif item.upvotes > 0
+      'ci-success'
+    else
+      'ci-pending'
+    end
+  end
+
   def issue_box_class(item)
     if item.respond_to?(:expired?) && item.expired?
       'issue-box-expired'

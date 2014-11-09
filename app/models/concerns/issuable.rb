@@ -86,9 +86,18 @@ module Issuable
   # Votes
   #
 
+  def downvoters
+    votes = notes.select{|note| note.downvote? || note.upvote? }
+    votes.sort_by!(&:updated_at)
+    votes.reverse!
+    votes.uniq!(&:author)
+    votes.select!(&:downvote?)
+    votes.map(&:author)
+  end
+
   # Return the number of -1 comments (downvotes)
   def downvotes
-    notes.select(&:downvote?).size
+    self.downvoters.size
   end
 
   def downvotes_in_percent
@@ -99,9 +108,18 @@ module Issuable
     end
   end
 
+  def upvoters
+    votes = notes.select{|note| note.downvote? || note.upvote? }
+    votes.sort_by!(&:updated_at)
+    votes.reverse!
+    votes.uniq!(&:author)
+    votes.select!(&:upvote?)
+    votes.map(&:author)
+  end
+
   # Return the number of +1 comments (upvotes)
   def upvotes
-    notes.select(&:upvote?).size
+    self.upvoters.size
   end
 
   def upvotes_in_percent

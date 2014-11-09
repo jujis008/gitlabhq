@@ -1,0 +1,18 @@
+.ci_widget{ class: review_box_class(@merge_request) }
+  .row
+    .col-sm-2.text-left
+      Review
+
+    .col-sm-4.text-left{:style => ("display:none" unless @merge_request.upvotes > 0) }
+      %span.vote.upvote.label.label-success
+        %i.fa.fa-thumbs-up
+          \+1
+      - @merge_request.upvoters.each do |participant|
+        = link_to_member(@project, participant, name: false, size: 24)
+
+    .col-sm-4.text-left{:style => ("display:none" unless @merge_request.downvotes > 0) }
+      %span.vote.downvote.label.label-danger
+        %i.fa.fa-thumbs-down
+          \-1
+      - @merge_request.downvoters.each do |participant|
+        = link_to_member(@project, participant, name: false, size: 24)

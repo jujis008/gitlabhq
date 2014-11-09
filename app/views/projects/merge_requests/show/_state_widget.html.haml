@@ -1,7 +1,8 @@
 .mr-state-widget
-  - if @merge_request.source_project.ci_service && @commits.any?
-    .mr-widget-heading
+  .mr-widget-heading
+    - if @merge_request.source_project.ci_service && @commits.any?
       = render "projects/merge_requests/show/mr_ci"
+    = render "projects/merge_requests/show/review_votes"
   .mr-widget-body
     - if @merge_request.open?
       - if @merge_request.source_branch_exists? && @merge_request.target_branch_exists?
@@ -44,4 +45,3 @@
         Accepting this merge request will close #{@closes_issues.size == 1 ? 'issue' : 'issues'}
         = succeed '.' do
           != gfm(issues_sentence(@closes_issues))
-
